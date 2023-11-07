@@ -168,12 +168,15 @@ double estate(){
 
 double sedan(){
 
-    double car_weight_tax, engine_tax, car_age_tax;
+    double storage_tax = storage();
+    double roadtoll_tax = transportation();
+
+    double car_weight_tax, engine_tax, car_age_tax, total_tax;
     double ID = 0.25 * CIF, VAT = 0.18 * CIF, WHT = 0.06 * CIF;
     double tax1 = ID + VAT + WHT + IL + SD + FF + ED + DPS;
     int car_age = 2023 - year; 
 
-
+if(car_age < 15){
     if(gross_weight >= 1500 && gross_weight <= 2000){
         car_weight_tax = 0.1 * CIF;
     }else if(gross_weight > 2000){
@@ -199,14 +202,23 @@ double sedan(){
    }else{
         car_age_tax = 0.0;
    }
+double tax2 = car_weight_tax + engine_tax + car_age_tax + storage_tax + roadtoll_tax;
 
+total_tax = tax1 + tax2;
+
+}else{
+    printf("Sedans older than 15years cannot be imported into the country! \n");
+    total_tax = 0.0;
+}
+
+    return total_tax;
 }
 
 int main(){
     
     userInput();
 
-    printf("Estate tax is: %.3lf", estate());
+    printf("Estate tax is: %.3lf", sedan());
 
 
 
