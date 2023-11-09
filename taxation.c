@@ -17,12 +17,23 @@ int APS = 300000;
 int car_age, transportation_mode, bond_duration, registration_type;
 
 
+void carType(){
+    scanf("%d", &car_type);
+}
+
 void userInput(){
 
     printf("1. Ambulance \n2. Estate \n3. Sedan \n4. SUV \n5. Trailer \n6. Other \n") ;
-    
     printf("Enter a number that corresponds to the type of vehicle: ");
     scanf("%d", &car_type);
+    
+    // carType();
+    // if(car_type > 0 && car_type <= 6){
+    //     carType();
+    // }else{
+    //     printf("Invalid input! \n");
+    // }
+
 
     printf("Enter the Cost Insurance and Freight: ");
     scanf("%lf", &CIF);
@@ -99,12 +110,10 @@ double ambulance(){
 
     if(car_age > 10){
         double IL = 0.15 * CIF;
-        double netTax = tax1 + IL + transportation_tax + storage_tax;
-        return netTax;
+        netTax = tax1 + IL + transportation_tax + storage_tax;
     }else{
         double IL = 150000;
-        double netTax = tax1 + IL + transportation_tax + storage_tax;
-        return netTax;
+        netTax = tax1 + IL + transportation_tax + storage_tax;
     }
     
 
@@ -214,11 +223,128 @@ total_tax = tax1 + tax2;
     return total_tax;
 }
 
+double SUV(){
+
+    double storage_tax = storage();
+    double roadtoll_tax = transportation();
+
+    double seat_tax, car_weight_tax, car_age_tax;
+
+    double ID = 0.25 * CIF, VAT = 0.18 * CIF, WHT = 0.06 * CIF;
+    double tax1 = ID + VAT + WHT + IL + SD + FF + ED + APS;
+    int car_age = 2023 - year;
+
+    if(seat_capacity > 5){
+         seat_tax = (seat_capacity - 5) * 350000;
+   }else{
+        seat_tax = 0.0;
+   }
+
+   if(gross_weight >= 5000){
+        car_weight_tax = 0.15 * CIF;
+    }else{
+        car_weight_tax = 0.0;
+    }
+
+    //engine_tax doesn't apply in SUVs
+
+
+    if(car_age >= 1 && car_age <= 5){
+        car_age_tax = 0.1 * CIF;
+        }else if(car_age > 5 && car_age <= 10){
+        car_age_tax = 0.15 * CIF;
+        }else if(car_age > 10){
+        car_age_tax = 0.25 * CIF;
+        }else{
+        car_age_tax = 0.0;
+     }
+
+     double tax2 = seat_tax + car_weight_tax + car_age_tax + roadtoll_tax + storage_tax;
+
+     double total_tax = tax1 + tax2;
+
+        return total_tax;
+}
+
+double trailer(){
+
+    double ID = 0.25 * CIF, VAT = 0.18 * CIF, WHT = 0.06 * CIF;
+    double tax1 = ID + VAT + WHT + IL + SD + FF + ED;
+    int car_age = 2023 - year;
+
+    double reg_tax = registration();
+    double storage_tax = storage();
+    double roadtoll_tax = transportation();
+
+    double car_weight_tax, engine_tax, car_age_tax;
+
+
+    if(gross_weight >= 15000 && gross_weight <= 20000){
+        car_weight_tax = 0.15 * CIF;
+    }else if(gross_weight > 20000){
+        car_weight_tax = 0.25 * CIF;
+    }else if(gross_weight < 15000){
+        car_weight_tax = 0.05 * CIF;
+    }else{}
+
+    if(engine_capacity > 20000){
+        engine_tax = 0.1 * CIF;
+   }else if(engine_capacity >= 15000 && engine_capacity <= 20000){
+        engine_tax = 0.05 * CIF;
+   }else if(engine_capacity < 15000){
+        engine_tax = 0.025 * CIF;
+   }else{}
+
+   if(car_age >= 10 && car_age <= 15){
+        car_age_tax = 0.1 * CIF;
+   }else if(car_age > 5 && car_age < 10){
+        car_age_tax = 0.05 * CIF;
+   }else if(car_age < 5){
+        car_age_tax = 0.015 * CIF;
+   }else{
+        car_age_tax = 0.0;
+   }
+
+    double tax2 = car_weight_tax + engine_tax + car_age_tax + reg_tax + storage_tax + roadtoll_tax;
+
+    double total_tax = tax1 + tax2;
+
+    return total_tax;
+}
+
+double other(){
+
+    double ID = 0.25 * CIF, VAT = 0.18 * CIF, WHT = 0.06 * CIF;
+    double tax1 = ID + VAT + WHT + IL + SD + FF + ED;
+
+    double reg_tax = registration();
+    double storage_tax = storage();
+    double roadtoll_tax = transportation();
+
+    double tax2 = tax1 + roadtoll_tax + storage_tax + reg_tax;
+
+    return tax2;
+}
+
 int main(){
     
     userInput();
 
-    printf("Estate tax is: %.3lf", sedan());
+    
+
+    if(car_type == 1){
+        printf("Ambulance tax is: %.3lf", ambulance());
+    }else if(car_type == 2){
+        printf("Estate tax is: %.3lf", estate());
+    }else if(car_type == 3){
+        printf("Sedan tax is: %.3lf", sedan());
+    }else if(car_type == 4){
+        printf("SUV tax is: %.3lf", SUV());
+    }else if(car_type == 5){
+        printf("Trailer tax is: %.3lf", trailer());
+    }else if(car_type == 6){
+        printf("The tax on your vehicle is: %.3lf", other());
+    }else{}
 
 
 
