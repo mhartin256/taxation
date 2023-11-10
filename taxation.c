@@ -345,7 +345,7 @@ int main(){
     }else if(car_type == 6){
         printf("The tax on your vehicle is: %.3lf", other());
     }else{
-        printf("invalid")
+        printf("invalid");
     }
 
 
